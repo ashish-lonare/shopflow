@@ -1,6 +1,7 @@
 # OSX
 #
 .DS_Store
+Thumbs.db
 
 # Xcode
 #
@@ -38,8 +39,9 @@ local.properties
 # node.js
 #
 node_modules/
-npm-debug.log
-yarn-error.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
 # fastlane
 #
@@ -73,3 +75,34 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# React Native
+.expo/
+dist/
+web-build/
+
+# Native builds
+android/app/build/
+android/.gradle/
+ios/Pods/
+ios/build/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# Environment variables
+.env
+.env.local
+.env.*
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
