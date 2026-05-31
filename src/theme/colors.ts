@@ -1,11 +1,12 @@
 export const colors = {
   primary: '#6366F1', // Indigo (modern, widely used)
   secondary: '#06B6D4', // Cyan accent
+  accent: '#FFFFFF', // Highlight elements
 
   // 🧱 Backgrounds
   background: '#F8FAFC', // very light gray
-  surface: '#FFFFFF',
-  surfaceVariant: '#F1F5F9',
+  surface: '#F1F5F9',
+  surfaceVariant: '#FFFFFF',
 
   // 📝 Text
   text: '#0F172A', // strong dark

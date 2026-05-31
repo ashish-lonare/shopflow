@@ -5,6 +5,7 @@ export const darkTheme: AppTheme = {
     // 🎨 Brand
     primary: '#818CF8', // lighter indigo
     secondary: '#22D3EE',
+    accent: '#FFFFFF', // Highlight elements
 
     // 🧱 Backgrounds
     background: '#0F172A', // deep navy (not pure black)
@@ -31,7 +32,7 @@ export const darkTheme: AppTheme = {
     overlay: 'rgba(0,0,0,0.7)',
 
     // ✨ Components
-    card: '#1E293B',
+    card: '#334155',
     shadow: '#000000',
 
     // 🔘 Buttons

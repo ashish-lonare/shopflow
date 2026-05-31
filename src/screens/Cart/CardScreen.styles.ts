@@ -93,9 +93,9 @@ export const useCartScreenStyles = () => {
     alignItems: 'center',
   },
   checkoutText: {
-    color: theme.colors.surface,
+    color: theme.colors.accent,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '400',
   },
 });
 };

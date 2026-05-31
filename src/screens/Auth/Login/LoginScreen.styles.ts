@@ -24,7 +24,7 @@ export const useLoginScreenStyles = () => {
     inputStyles: {
       width: '100%',
       height: 40,
-      borderColor: theme.colors.textSecondary,
+      borderColor: theme.colors.primary,
       borderWidth: 1,
       marginBottom: 12,
       paddingHorizontal: 8,
@@ -40,7 +40,7 @@ export const useLoginScreenStyles = () => {
       backgroundColor: theme.colors.primary,
     },
     buttonTxt: {
-      color: theme.colors.surface,
+      color: theme.colors.accent,
       fontSize: 16,
       fontWeight: 'bold',
       textAlign: 'center',
@@ -70,7 +70,7 @@ export const useLoginScreenStyles = () => {
       justifyContent: 'center',
     },
     signUpBtnTxt: {
-      color: theme.colors.secondary,
+      color: theme.colors.info,
       fontSize: 14,
       fontWeight: '500',
     },

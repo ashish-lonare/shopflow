@@ -3,6 +3,7 @@ export interface AppTheme {
     // 🎨 Brand
   primary: string;
   secondary: string;
+  accent: string;
 
   // 🧱 Backgrounds
   background: string;

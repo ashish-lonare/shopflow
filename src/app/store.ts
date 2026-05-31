@@ -6,6 +6,8 @@ import { authApi } from '../features/auth/authApi';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistReducer, persistStore } from 'redux-persist';
 
+import { productApi } from '../features/products/productApi';
+
 import {
   FLUSH,
   REHYDRATE,
@@ -34,13 +36,14 @@ export const store = configureStore({
     theme: persistedThemeReducer,
     auth: persistedAuthReducer,
     [authApi.reducerPath]: authApi.reducer,
+    [productApi.reducerPath]: productApi.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(authApi.middleware),
+    }).concat(authApi.middleware, productApi.middleware),
 });
 
 export const persistor = persistStore(store);
