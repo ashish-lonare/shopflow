@@ -1,8 +1,13 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { LoginRequest, RefreshRequest, RefreshResponse, UserResponse } from './types';
+import {
+  LoginRequest,
+  RefreshRequest,
+  RefreshResponse,
+  UserResponse,
+} from './types';
 import { baseQuery } from '../../services/baseQuery';
 
-export const authApi = createApi({
+const authApi = createApi({
   reducerPath: 'authApi',
 
   baseQuery: baseQuery,
@@ -33,4 +38,14 @@ export const authApi = createApi({
   }),
 });
 
-export const { useLoginMutation, useGetCurrentUserQuery, useRefreshTokenMutation } = authApi;
+export const {
+  // Hooks for mutations
+  useLoginMutation,
+  useGetCurrentUserQuery,
+  useRefreshTokenMutation,
+  // Reducer
+  reducerPath: authApiReducerPath,
+  reducer: authApiReducer,
+  // Middleware
+  middleware: authApiMiddleware,
+} = authApi;

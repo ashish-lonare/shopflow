@@ -1,6 +1,5 @@
 import { View } from "react-native";
 import AppInfoCard from "../../../features/profile/components/AppInfo/AppInfoCard";
-import { CurrentThemeCard } from "../../../features/profile/components/CurrentTheme/CurrentThemeCard";
 import UserInfoCard from "../../../features/profile/components/UserInfo/UserInfoCard";
 import { useProfileSreenStyles } from "./ProfileScreen.styles";
 
@@ -11,7 +10,7 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <UserInfoCard />
-      <CurrentThemeCard />
+      {/* <CurrentThemeCard /> */}
       <AppInfoCard />
     </View>
   );

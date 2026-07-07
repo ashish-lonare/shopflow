@@ -51,6 +51,11 @@ export interface ProductsResponse {
   limit: number;
 }
 
+export interface ProductsRequest {
+  limit: number;
+  skip: number;
+}
+
 export interface Category {
   value: string;
   label: string;

@@ -212,6 +212,10 @@ export const useProductDetailsScreenStyles = () => {
       shadowOpacity: 0.18,
       shadowRadius: 10,
       elevation: 3,
+      opacity: 1,
+    },
+    disabledButton: {
+      opacity: 0.5,
     },
     addToCartButton: {
       justifyContent: 'center',

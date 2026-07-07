@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -20,15 +20,23 @@ const ProductsScreen: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const styles = useProductsScreenStyles();
+  const PAGE_SIZE = 10;
 
-  const { data, isLoading, isFetching, error, refetch } = useGetProductsQuery();
+  const [page, setPage] = useState(0);
+
+  const { data, isLoading, isFetching, error, refetch } = useGetProductsQuery({
+    limit: PAGE_SIZE,
+    skip: page * PAGE_SIZE,
+  });
+
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const { data: categories = [] } = useGetProductCategoryListQuery();
-
+  const hasMore = allProducts.length < (data?.total ?? 0);
   const filteredProducts = useMemo(() => {
-    const products = data?.products ?? [];
+    const products = allProducts;
 
     const query = searchQuery.toLowerCase();
 
@@ -43,12 +51,36 @@ const ProductsScreen: React.FC = () => {
 
       return matchesSearch && matchesCategory;
     });
-  }, [data?.products, searchQuery, selectedCategory]);
+  }, [allProducts, searchQuery, selectedCategory]);
 
   const renderItem = useCallback(
     ({ item }: { item: Product }) => <ProductItem product={item} />,
     [],
   );
+
+  useEffect(() => {
+    if (!data?.products) {
+      return;
+    }
+
+    setAllProducts(prev => {
+      const existingIds = new Set(prev.map(item => item.id));
+
+      const newProducts = data.products.filter(
+        item => !existingIds.has(item.id),
+      );
+
+      return [...prev, ...newProducts];
+    });
+  }, [data]);
+
+  const handleLoadMore = useCallback(() => {
+    if (isFetching || !hasMore) {
+      return;
+    }
+
+    setPage(prev => prev + 1);
+  }, [isFetching, hasMore]);
 
   const renderEmptyComponent = () => {
     return (
@@ -65,11 +97,11 @@ const ProductsScreen: React.FC = () => {
     );
   };
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return (
-       <View style={styles.centerContainer}>
-          <ActivityIndicator size="large" color={styles.loaderColor.color} />
-        </View>
+      <View style={styles.centerContainer}>
+        <ActivityIndicator size="large" color={styles.loaderColor.color} />
+      </View>
     );
   }
 
@@ -83,56 +115,62 @@ const ProductsScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-          <FlatList
-            data={[{ value: 'All', label: 'All' }, ...categories]}
-            style={styles.categoryListContainer}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={item => item.value}
-            contentContainerStyle={styles.categoryList}
-            renderItem={({ item }) => {
-              const isSelected = item.value === selectedCategory;
+      <FlatList
+        data={[{ value: 'All', label: 'All' }, ...categories]}
+        style={styles.categoryListContainer}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={item => item.value}
+        contentContainerStyle={styles.categoryList}
+        renderItem={({ item }) => {
+          const isSelected = item.value === selectedCategory;
 
-              return (
-                <TouchableOpacity
-                  style={[
-                    styles.categoryChip,
-                    isSelected && styles.selectedCategoryChip,
-                  ]}
-                  onPress={() => setSelectedCategory(item.value)}
-                >
-                  <Text
-                    style={[
-                      styles.categoryText,
-                      isSelected && styles.selectedCategoryText,
-                    ]}
-                  >
-                    {item.label}
-                  </Text>
-                </TouchableOpacity>
-              );
-            }}
-          />
-          <View style={styles.searchBarContainer}>
-            <TextInput
-              style={styles.searchBar}
-              placeholder="Search by title, category, or brand..."
-              placeholderTextColor={styles.placeHolderTextColor.color}
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-            />
-          </View>
-          <FlatList
-            data={filteredProducts}
-            keyExtractor={item => item.id.toString()}
-            renderItem={renderItem}
-            numColumns={1}
-            contentContainerStyle={styles.listContent}
-            refreshing={isFetching}
-            onRefresh={refetch}
-            ListEmptyComponent={renderEmptyComponent}
-          />
-      
+          return (
+            <TouchableOpacity
+              style={[
+                styles.categoryChip,
+                isSelected && styles.selectedCategoryChip,
+              ]}
+              onPress={() => setSelectedCategory(item.value)}
+            >
+              <Text
+                style={[
+                  styles.categoryText,
+                  isSelected && styles.selectedCategoryText,
+                ]}
+              >
+                {item.label}
+              </Text>
+            </TouchableOpacity>
+          );
+        }}
+      />
+      <View style={styles.searchBarContainer}>
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Search by title, category, or brand..."
+          placeholderTextColor={styles.placeHolderTextColor.color}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
+        {searchQuery.length > 0 && (
+        <TouchableOpacity style={styles.iconContainer} onPress={() => setSearchQuery('')}>
+          <MaterialIcons name="cancel" size={20} style={styles.cancelIcon} />
+        </TouchableOpacity>
+      )}
+      </View>
+      <FlatList
+        data={filteredProducts}
+        keyExtractor={item => item.id.toString()}
+        renderItem={renderItem}
+        numColumns={1}
+        contentContainerStyle={styles.listContent}
+        refreshing={isFetching}
+        onRefresh={refetch}
+        ListEmptyComponent={renderEmptyComponent}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+      />
     </View>
   );
 };

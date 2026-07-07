@@ -7,9 +7,10 @@ import {
   Product,
   CategoryListResponse,
   Category,
+  ProductsRequest,
 } from './types';
 
-export const productApi = createApi({
+const productApi = createApi({
   reducerPath: 'productApi',
 
   baseQuery,
@@ -17,24 +18,13 @@ export const productApi = createApi({
   tagTypes: ['Products'],
 
   endpoints: builder => ({
-    getProducts: builder.query<ProductsResponse, void>({
-      query: () => ({
-        url: '/products',
+    getProducts: builder.query<ProductsResponse, ProductsRequest>({
+      query: ({ limit, skip }) => ({
+        url: `/products?limit=${limit}&skip=${skip}`,
         method: 'GET',
       }),
-
       providesTags: ['Products'],
-
-      transformResponse: (response: ProductsResponse) => {
-        const shuffled = [...response.products];
-
-        shuffled.sort(() => Math.random() - 0.5);
-
-        return {
-          ...response,
-          products: shuffled,
-        };
-      },
+      transformResponse: (response: ProductsResponse) => response,
     }),
 
     getProductById: builder.query<Product, number>({
@@ -64,7 +54,13 @@ export const productApi = createApi({
 });
 
 export const {
+  // Hooks for queries
   useGetProductsQuery,
   useGetProductByIdQuery,
-  useGetProductCategoryListQuery
+  useGetProductCategoryListQuery,
+  // Reducer
+  reducerPath: productApiReducerPath,
+  reducer: productApiReducer,
+  // Middleware
+  middleware: productApiMiddleware,
 } = productApi;

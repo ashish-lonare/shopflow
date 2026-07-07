@@ -3,11 +3,9 @@ import {
 } from '@react-navigation/native';
 
 export type MainStackParamList = {
-  Home: undefined;
-
+  Home: NavigatorScreenParams<RootTabParamList>;
   ProductDetails: {
     productId: number;
-    addToCart?: boolean;
   };
 };
 

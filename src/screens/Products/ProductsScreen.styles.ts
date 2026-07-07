@@ -19,6 +19,8 @@ export const useProductsScreenStyles = () => {
       backgroundColor: theme.colors.surface,
     },
     searchBarContainer: {
+      flexDirection: 'row',
+    alignItems: 'center',
       marginHorizontal: 12,
       marginVertical: 12,
       borderRadius: 8,
@@ -33,6 +35,7 @@ export const useProductsScreenStyles = () => {
       elevation: 2,
     },
     searchBar: {
+       flex: 1,
       paddingHorizontal: 12,
       paddingVertical: 10,
       borderRadius: 8,
@@ -44,7 +47,12 @@ export const useProductsScreenStyles = () => {
       paddingHorizontal: 4,
       paddingBottom: 16,
     },
-
+    iconContainer: {
+      padding: 5,
+    },
+    cancelIcon: {
+      color: theme.colors.primary,
+    },
     emptyTextMsgContainer: {
       flex: 1,
       justifyContent: 'center',
@@ -53,8 +61,13 @@ export const useProductsScreenStyles = () => {
       backgroundColor: theme.colors.surfaceVariant,
       marginHorizontal: 4,
       padding: 20,
-      borderColor: theme.colors.shadow,
+      borderColor: theme.colors.border,
       borderWidth: 0.3,
+      elevation: 2,
+      shadowColor: theme.colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
     },
 
     emptyIconContainer: {
@@ -126,6 +139,10 @@ export const useProductsScreenStyles = () => {
     selectedCategoryText: {
       color: theme.colors.accent,
       fontWeight: '400',
+    },
+    footer: {
+      paddingVertical: 20,
+      alignItems: 'center',
     },
   });
 };

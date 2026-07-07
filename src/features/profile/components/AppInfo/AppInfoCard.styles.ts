@@ -7,11 +7,6 @@ export const useAppInfoCardStyles = () => {
     container: {
       flex: 1,
       backgroundColor: theme.colors.surface,
-      paddingHorizontal: 16,
-      paddingVertical: 12,
-      borderRadius: 12,
-      borderColor: theme.colors.border,
-      borderWidth: 1,
     },
     contentContainer: {
       flexGrow: 1,
@@ -34,7 +29,14 @@ export const useAppInfoCardStyles = () => {
       paddingHorizontal: 12,
       backgroundColor: theme.colors.surfaceVariant,
       borderRadius: 8,
-      marginTop: 12,
+      marginBottom: 12,
+      borderColor: theme.colors.border,
+      borderWidth: 0.3,
+      elevation: 2,
+      shadowColor: theme.colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
     },
     settingLabel: {
       flex: 1,

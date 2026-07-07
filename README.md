@@ -1,97 +1,332 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+<p align="left">
+  <img src="src/assets/images/logo_header.png" alt="ShopFlow Logo" width="160" />
+</p>
 
-# Getting Started
+A modern React Native shopping application built with **React Native**,
+**TypeScript**, **Redux Toolkit**, **RTK Query**, and **React
+Navigation**.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+ShopFlow was created as a portfolio and learning project to demonstrate
+production-ready React Native architecture, authentication, server state
+management with RTK Query, client state management with Redux Toolkit,
+reusable UI components, and modern development best practices.
 
-## Step 1: Start Metro
+> **Status:** 🚧 Active Development
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+------------------------------------------------------------------------
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+# 📱 Demo
 
-```sh
-# Using npm
-npm start
+> <img src="src/assets/demo/demo.gif" width="500" alt="App Demo">
 
-# OR using Yarn
-yarn start
+
+------------------------------------------------------------------------
+
+# 📸 Screenshots
+
+> Add screenshots here
+
+  Splash       Login        Products
+  ------------ ------------ ------------
+  ![Splash Screen](src/assets/demo/splash_screen.jpg.png)   Screenshot   Screenshot
+
+  Product Details   Cart         Profile
+  ----------------- ------------ ------------
+  Screenshot        Screenshot   Screenshot
+
+------------------------------------------------------------------------
+
+# ✨ Features
+
+## Authentication
+
+-   Login using RTK Query
+-   JWT Authentication
+-   Access Token & Refresh Token handling
+-   Protected Navigation
+-   Redux Persist authentication state
+-   Automatic Authorization Header
+-   Logout functionality
+
+## Products
+
+-   Product Listing
+-   Product Details
+-   Search Products
+-   Category Filter
+-   Pull To Refresh
+-   Loading & Empty States
+-   Reusable Product Card Component
+-   API response transformation using RTK Query
+
+## Cart
+
+-   Add Product to Cart
+-   Update Quantity
+-   Remove Product
+-   Persist Cart
+-   Order Summary
+-   UPI Deep Link Integration
+-   Total Price Calculation
+
+## Theme
+
+-   Light Theme
+-   Dark Theme
+-   Theme Persistence
+-   Dynamic Colors
+
+## State Management
+
+-   Redux Toolkit
+-   RTK Query
+-   Redux Persist
+-   Typed Hooks
+-   Typed Navigation
+-   Custom Base Query
+-   Automatic Authorization Headers
+
+------------------------------------------------------------------------
+
+# 🏗️ Architecture
+
+``` text
+src
+│
+├── app
+│   ├── hooks.ts
+│   ├── store.ts
+├── assets
+├── components
+├── features
+│   ├── auth
+│   ├── cart
+│   ├── products
+│   └── theme
+├── hooks
+├── navigation
+├── screens
+├── services
+├── theme
+└── App.tsx
 ```
 
-## Step 2: Build and run your app
+------------------------------------------------------------------------
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+# 🧠 Tech Stack
 
-### Android
+### Mobile
 
-```sh
-# Using npm
-npm run android
+-   React Native
+-   TypeScript
 
-# OR using Yarn
-yarn android
+### State Management
+
+-   Redux Toolkit
+-   RTK Query
+-   Redux Persist
+
+### Navigation
+
+-   React Navigation
+-   Native Stack
+-   Bottom Tabs
+
+### Networking
+
+-   RTK Query
+-   fetchBaseQuery
+-   Custom baseQuery
+
+### Storage
+
+-   AsyncStorage
+
+### UI
+
+-   React Native
+-   React Native Vector Icons
+-   Safe Area Context
+
+------------------------------------------------------------------------
+
+# 📡 APIs Used
+
+### Authentication
+
+-   Login
+-   Current User
+-   Refresh Token
+
+### Products
+
+-   Products List
+-   Product Details
+-   Product Categories
+
+------------------------------------------------------------------------
+
+# 🔐 Authentication Flow
+
+``` text
+Login
+  │
+  ▼
+Access Token
+  │
+  ▼
+Redux Persist
+  │
+  ▼
+prepareHeaders()
+  │
+  ▼
+Authenticated API Calls
 ```
 
-### iOS
+------------------------------------------------------------------------
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+# 📦 RTK Query Features Used
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+-   createApi
+-   fetchBaseQuery
+-   Custom baseQuery
+-   prepareHeaders
+-   Query Hooks
+-   transformResponse
+-   API Caching
+-   Auto-generated Hooks
 
-```sh
-bundle install
+------------------------------------------------------------------------
+
+# 🧩 Redux Toolkit Features Used
+
+### Slices
+
+-   Auth Slice
+-   Cart Slice
+-   Theme Slice
+
+### Concepts
+
+-   Reducers
+-   Actions
+-   Immer
+-   Selectors
+-   Typed Hooks
+-   Redux Persist
+
+------------------------------------------------------------------------
+
+# 🎨 UI Features
+
+-   Responsive Layout
+-   Search
+-   Category Chips
+-   Loading Indicators
+-   Empty State
+-   Pull To Refresh
+-   Dark Mode
+-   Reusable Components
+
+------------------------------------------------------------------------
+
+# 💳 UPI Payment
+
+The Cart module demonstrates UPI deep linking for initiating payments
+from supported UPI applications.
+
+Supported apps include:
+
+-   Google Pay
+-   PhonePe
+-   Paytm
+-   BHIM
+-   Amazon Pay (UPI)
+
+------------------------------------------------------------------------
+
+# 🚀 Getting Started
+
+## Clone Repository
+
+``` bash
+git clone https://github.com/ashish-lonare/shopflow.git
 ```
 
-Then, and every time you update your native dependencies, run:
+## Install Dependencies
 
-```sh
-bundle exec pod install
+``` bash
+npm install
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+## iOS
 
-```sh
-# Using npm
+``` bash
+cd ios
+pod install
+cd ..
 npm run ios
-
-# OR using Yarn
-yarn ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## Android
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+``` bash
+npm run android
+```
 
-## Step 3: Modify your app
+------------------------------------------------------------------------
 
-Now that you have successfully run the app, let's make changes!
+# 📚 Learning Objectives
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+This project was created to gain hands-on experience with:
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+-   React Native
+-   TypeScript
+-   Redux Toolkit
+-   RTK Query
+-   Redux Persist
+-   JWT Authentication
+-   React Navigation
+-   Modular Architecture
+-   Production-ready Mobile Development
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+------------------------------------------------------------------------
 
-## Congratulations! :tada:
+# 🚧 Upcoming Features
 
-You've successfully run and modified your React Native App. :partying_face:
+-   Infinite Scroll Pagination
+-   Product Reviews
+-   Wishlist
+-   Checkout Flow
+-   Order History
+-   Address Management
+-   Push Notifications
+-   Firebase Analytics
+-   Offline Support
+-   Unit Testing
+-   Detox E2E Testing
+-   CI/CD Pipeline
 
-### Now what?
+------------------------------------------------------------------------
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+# 👨‍💻 Author
 
-# Troubleshooting
+**Ashish Lonare**
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+Senior Mobile Application Developer
 
-# Learn More
+-   React Native
+-   Flutter
+-   Android
+-   TypeScript
+-   Redux Toolkit
 
-To learn more about React Native, take a look at the following resources:
+GitHub: https://github.com/ashish-lonare
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+------------------------------------------------------------------------
+
+# ⭐ Support
+
+If you found this project helpful, please consider giving it a ⭐ on
+GitHub.

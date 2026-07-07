@@ -6,12 +6,13 @@ import CartScreen from '../Cart/CartScreen';
 import ProductsScreen from '../Products/ProductsScreen';
 import ProfileScreen from '../Auth/Profile/ProfileScreen';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { Alert, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { useAppTheme } from '../../hooks/useAppTheme';
-import { AppTheme } from '../../theme/types';
+import { Alert, Image, TouchableOpacity, Text } from 'react-native';
 import { logout } from '../../features/auth/authSlice';
-import { useAppDispatch } from '../../app/hooks';
+
 import { Images } from '../../assets';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import useHomeScreenStyles from './HomeScreen.styles';
+import { clearCart } from '../../features/cart/cartSlice';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
@@ -24,13 +25,13 @@ type RootTabParamList = {
 };
 
 const iconMap: Record<keyof RootTabParamList, string> = {
-  Products: 'inventory',
+  Products: 'store',
   Cart: 'shopping-cart',
-  Profile: 'person',
+  Profile: 'settings-accessibility',
 };
 
 const buildTabScreenOptions =
-  (onLogout: () => void, theme: AppTheme) =>
+  (onLogout: () => void, styles: ReturnType<typeof useHomeScreenStyles>) =>
   ({
     route,
   }: {
@@ -38,46 +39,53 @@ const buildTabScreenOptions =
   }): BottomTabNavigationOptions => ({
     headerRight: () => (
       <TouchableOpacity onPress={onLogout} style={styles.logoutButton}>
-        <MaterialIcons name="logout" size={24} color={theme.colors.primary} />
+        <MaterialIcons
+          name="logout"
+          size={24}
+          color={styles.logoutButtonIcon.color}
+        />
       </TouchableOpacity>
     ),
-    headerTitle: () => <HeaderLogo />,
-    headerTitleStyle: {
-      fontWeight: 'bold',
-      color: theme.colors.primary,
-    },
+    headerTitle: () => <HeaderLogo styles={styles} />,
+    // headerTitleStyle: {
+    //   fontWeight: '200',
+    //   color: styles.tabBarActiveTintColor.color,
+    // },
     headerStyle: {
-      backgroundColor: theme.colors.background,
+      backgroundColor: styles.backgroundColor.color,
     },
-    headerTintColor: theme.colors.text,
+    headerTintColor: styles.headerTintColor.color,
 
     // ✅ Bottom tab icons
-    tabBarIcon: ({ color, size }) => (
+    tabBarIcon: ({ color, size, focused }) => (
       <MaterialIcons
         name={iconMap[route.name]}
-        size={size}
-        color={color} // ✅ use provided color
+        size={focused ? size + 3 : size}
+        color={color}
       />
     ),
 
-    // ✅ Tab colors (use your theme)
-    tabBarActiveTintColor: theme.colors.primary,
-    tabBarInactiveTintColor: theme.colors.text + '80',
-
-    tabBarStyle: {
-      backgroundColor: theme.colors.background,
-      borderTopColor: theme.colors.surface,
-      borderTopWidth: 1,
-    },
+    tabBarShowLabel: true,
+    tabBarLabel: ({ focused, children }) =>
+      focused ? <Text style={styles.tabLabel}>{children}</Text> : null,
+    tabBarActiveTintColor: styles.tabBarActiveTintColor.color,
+    tabBarInactiveTintColor: styles.tabBarInactiveTintColor.color,
+    tabBarStyle: styles.tabBarStyle,
   });
 
-const HeaderLogo = () => (
-  <Image source={Images.logoHeader} style={styles.headerLogoStyle} />
-);
+const HeaderLogo = ({
+  styles,
+}: {
+  styles: ReturnType<typeof useHomeScreenStyles>;
+}) => <Image source={Images.logoHeader} style={styles.headerLogoStyle} />;
 
 const HomeScreen = () => {
-  const theme = useAppTheme();
+  const styles = useHomeScreenStyles();
   const dispatch = useAppDispatch();
+  const cartItemsQuantity = useAppSelector(state =>
+    state.cart.items.reduce((total, item) => total + item.quantity, 0),
+  );
+  const badgeCount = cartItemsQuantity > 0 ? cartItemsQuantity : undefined;
 
   const handleLogout = () => {
     Alert.alert('Logout', 'Are you sure you want to logout?', [
@@ -85,6 +93,7 @@ const HomeScreen = () => {
       {
         text: 'Logout',
         onPress: () => {
+          dispatch(clearCart());
           dispatch(logout());
         },
       },
@@ -92,21 +101,23 @@ const HomeScreen = () => {
   };
 
   return (
-    <Tab.Navigator screenOptions={buildTabScreenOptions(handleLogout, theme)}>
+    <Tab.Navigator screenOptions={buildTabScreenOptions(handleLogout, styles)}>
+
       <Tab.Screen name="Products" component={ProductsScreen} />
 
-      <Tab.Screen name="Cart" component={CartScreen} />
+      <Tab.Screen
+        name="Cart"
+        component={CartScreen}
+        options={{
+          tabBarBadge: badgeCount,
+          tabBarBadgeStyle: styles.tabBarBadgeStyle,
+        }}
+      />
 
       <Tab.Screen name="Profile" component={ProfileScreen} />
+      
     </Tab.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  logoutButton: {
-    marginRight: 15,
-  },
-  headerLogoStyle: { width: 140, height: 80, resizeMode: 'contain' },
-});
 
 export default HomeScreen;

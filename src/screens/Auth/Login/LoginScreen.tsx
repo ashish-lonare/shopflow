@@ -64,7 +64,7 @@ const LoginScreen = () => {
             style={[styles.inputStyles, styles.roundedBorder]}
             placeholder="Password"
             placeholderTextColor={styles.placeHolderTextColor.color}
-            secureTextEntry
+            secureTextEntry={false}
           />
 
           {error && (

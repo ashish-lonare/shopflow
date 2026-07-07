@@ -25,7 +25,9 @@ const UserInfoCard: React.FC = () => {
   return (
     <View style={styles.card}>
       {user?.image! ? (
+        <View style={styles.avatarContainer}>
         <Image source={{ uri: user.image }} style={styles.avatar} />
+        </View>
       ) : (
         <View style={[styles.avatar, styles.avatarPlaceholder]}>
           <Text style={styles.avatarPlaceholderText}>

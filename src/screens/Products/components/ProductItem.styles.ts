@@ -17,12 +17,14 @@ export const useProductItemStyles = () => {
       shadowOpacity: 0.1,
       shadowRadius: 4,
       borderColor: theme.colors.border,
-      borderWidth: .2,
+      borderWidth: 0.2,
     },
+
     thumbnail: {
       width: 100,
       height: 100,
-      backgroundColor: `${theme.colors.primary}1A`, 
+      backgroundColor: `${theme.colors.primary}1A`,
+       borderBottomRightRadius: 8,
     },
     productInfo: {
       flex: 1,
@@ -92,9 +94,19 @@ export const useProductItemStyles = () => {
       borderWidth: 0.4,
       borderColor: theme.colors.primary,
       marginLeft: 8,
+      overflow: 'hidden',
+      shadowColor: theme.colors.shadow,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
     },
     addToCartIcon: {
       color: theme.colors.primary,
+    },
+    brandQuantityContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
     },
   });
 };

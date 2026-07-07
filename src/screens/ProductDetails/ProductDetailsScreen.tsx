@@ -13,29 +13,48 @@ import { useProductDetailsScreenStyles } from './ProductDeatilsScreen.styles';
 import { useGetProductByIdQuery } from '../../features/products/productApi';
 import { useRoute } from '@react-navigation/native';
 
-import { useNavigation } from '@react-navigation/native';
 import { useAppTheme } from '../../hooks/useAppTheme';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useAppNavigation } from '../../navigation/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { addToCart, removeFromCart } from '../../features/cart/cartSlice';
+import { CartItem } from '../../features/cart/types';
+import QuantitySelector from '../../components/quantitySelector/QuantitySelector';
 
 const ProductDetailsScreen: React.FC = () => {
   const route = useRoute();
   const theme = useAppTheme();
-  const navigation = useNavigation();
-  const { productId, addToCart } = route.params as {
+  const navigation = useAppNavigation();
+  const dispatch = useAppDispatch();
+  const { productId } = route.params as {
     productId: number;
-    addToCart?: boolean;
   };
 
   const { data: product, isLoading, error } = useGetProductByIdQuery(productId);
-  const [quantity, setQuantity] = useState(addToCart ? 1 : 0);
   const [isWishlisted, setIsWishlisted] = useState(false);
 
   const styles = useProductDetailsScreenStyles();
 
-  const handleIncrement = () => setQuantity(quantity + 1);
-  const handleDecrement = () => {
-    quantity > 1 ? setQuantity(quantity - 1) : navigation.goBack();
-  };
+  const quantity = useAppSelector(state => {
+    const item = state.cart.items.find(
+      (nItem: CartItem) => nItem.productId === productId,
+    );
+    return item ? item.quantity : 0;
+  });
+
+  const handleIncrement = () =>
+    dispatch(
+      addToCart({
+        productId: product?.id || 0,
+        title: product?.title || '',
+        price: product?.price || 0,
+        quantity: 1,
+        thumbnail: product?.thumbnail || '',
+        stock: product?.stock || 0,
+      }),
+    );
+  const handleDecrement = () =>
+    dispatch(removeFromCart({ productId: productId }));
 
   const toggleWishlist = () => setIsWishlisted(!isWishlisted);
 
@@ -48,9 +67,50 @@ const ProductDetailsScreen: React.FC = () => {
   }
 
   const handleAddToCart = () => {
-    console.log(`Added ${quantity} of ${product.title} to cart`);
-    navigation.goBack();
+    if (product) {
+      const cartItem: CartItem = {
+        productId: product.id,
+        title: product.title,
+        price: product.price,
+        quantity: 1,
+        thumbnail: product.thumbnail,
+        stock: product.stock,
+      };
+      dispatch(addToCart(cartItem));
+      console.log(`Added ${cartItem.quantity} of ${product.title} to cart`);
+    }
   };
+
+  const handleGoToCart = () => {
+    console.log(`Going to cart`);
+    navigation.navigate('Home', {
+      screen: 'Cart',
+    });
+  };
+
+  const availabilityStatus = (product.availabilityStatus || '').toLowerCase();
+  const isInStock = availabilityStatus === 'in stock';
+  const isLowStock = availabilityStatus === 'low stock';
+  const isOutOfStock = availabilityStatus === 'out of stock';
+  const canAddToCart = !isOutOfStock;
+
+  const stockIconName = isOutOfStock
+    ? 'close-circle'
+    : isLowStock
+    ? 'alert-circle'
+    : 'check-circle';
+  const stockColor = isOutOfStock
+    ? theme.colors.error
+    : isLowStock
+    ? theme.colors.warning
+    : theme.colors.success;
+  const stockLabel = isOutOfStock
+    ? 'Out of Stock'
+    : isLowStock
+    ? 'Low Stock'
+    : isInStock
+    ? 'In Stock'
+    : product.availabilityStatus;
 
   return (
     <View style={styles.container}>
@@ -120,28 +180,21 @@ const ProductDetailsScreen: React.FC = () => {
 
               {/* Quantity Selector */}
               {quantity > 0 ? (
-                <View style={styles.quantityContainer}>
-                  <Text style={styles.sectionTitle}>Quantity</Text>
-                  <View style={styles.quantitySelector}>
-                    <TouchableOpacity
-                      style={styles.quantityButton}
-                      onPress={handleDecrement}
-                    >
-                      <Icon name="minus" size={20} color="#000" />
-                    </TouchableOpacity>
-                    <Text style={styles.quantityText}>{quantity}</Text>
-                    <TouchableOpacity
-                      style={styles.quantityButton}
-                      onPress={handleIncrement}
-                    >
-                      <Icon name="plus" size={20} color="#000" />
-                    </TouchableOpacity>
-                  </View>
-                </View>
+                <QuantitySelector
+                  quantity={quantity}
+                  onDecrement={handleDecrement}
+                  onIncrement={handleIncrement}
+                  maxQuantity={product.stock}
+                />
               ) : (
+                // Add to Cart Button
                 <TouchableOpacity
-                  style={styles.addToCartButton}
-                  onPress={() => setQuantity(1)}
+                  onPress={() => handleAddToCart()}
+                  style={[
+                    styles.addToCartButton,
+                    !canAddToCart && styles.disabledButton,
+                  ]}
+                  disabled={!canAddToCart}
                 >
                   <MaterialIcons
                     name="add-shopping-cart"
@@ -154,41 +207,25 @@ const ProductDetailsScreen: React.FC = () => {
 
               {/* Stock Status */}
               <View style={styles.stockContainer}>
-                <Icon
-                  name={
-                    product.availabilityStatus ? 'check-circle' : 'close-circle'
-                  }
-                  size={16}
-                  color={
-                    product.availabilityStatus
-                      ? theme.colors.success
-                      : theme.colors.error
-                  }
-                />
+                <Icon name={stockIconName} size={16} color={stockColor} />
                 <Text
                   style={[
                     styles.stockText,
                     {
-                      color: product.availabilityStatus
-                        ? theme.colors.success
-                        : theme.colors.error,
+                      color: stockColor,
                     },
                   ]}
                 >
-                  {product.availabilityStatus ? 'In Stock' : 'Out of Stock'}
+                  {stockLabel}
                 </Text>
               </View>
             </View>
           </ScrollView>
 
-          {/* Add to Cart Button */}
+          {/* Go to Cart Button */}
           <TouchableOpacity
-            style={[
-              styles.goToCartButton,
-              { opacity: product.availabilityStatus ? 1 : 0.5 },
-            ]}
-            onPress={handleAddToCart}
-            disabled={!product.availabilityStatus}
+            style={[styles.goToCartButton]}
+            onPress={handleGoToCart}
           >
             <Text style={styles.goToCartText}>Go to Cart</Text>
           </TouchableOpacity>
