@@ -17,22 +17,15 @@ reusable UI components, and modern development best practices.
 
 # 📱 Demo
 
-> <img src="src/assets/demo/demo.gif" width="500" alt="App Demo">
+> <img src="src/assets/demo/demo.gif" width="800" alt="App Demo">
 
 
 ------------------------------------------------------------------------
 
 # 📸 Screenshots
 
-> Add screenshots here
-
-  Splash       Login        Products
-  ------------ ------------ ------------
-  ![Splash Screen](src/assets/demo/splash_screen.jpg.png)   Screenshot   Screenshot
-
-  Product Details   Cart         Profile
-  ----------------- ------------ ------------
-  Screenshot        Screenshot   Screenshot
+> <img src="src/assets/demo/splash_screen.jpg" width="200" alt="Splash Screen"> <img src="src/assets/demo/login.jpg" width="200" alt="Login Screen"> <img src="src/assets/demo/product_list.jpg" width="200" alt="Products List"> <img src="src/assets/demo/product_details.jpg" width="200" alt="Product Details"> <img src="src/assets/demo/cart.jpg" width="200" alt="Cart"> <img src="src/assets/demo/profile_settings.jpg" width="200" alt="Profile and Settings">
+ 
 
 ------------------------------------------------------------------------
 
